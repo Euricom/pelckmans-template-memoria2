@@ -73,7 +73,7 @@ collections:
             name: images
             widget: list
             fields:
-              - { label: Afbeelding, name: image, widget: image, required: false }
+              - { label: Afbeelding, name: image, widget: image }
               - { name: interactiveImage, label: Interactive Afbeelding, widget: interactive-image }
 #              - label: Interacties
 #                name: image-interactions
