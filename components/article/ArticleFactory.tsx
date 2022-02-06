@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { IArticle, IIconType, IImage } from 'utils/service/types';
 import TextArticle from './textArticle/TextArticle';
 import { ArticleProps } from './types';
+import InteractiveImageArticle from './interactiveImageArticle/InteractiveImageArticle';
 
 type ArticleFactoryProps = {
   articles: IArticle[];
@@ -13,15 +14,26 @@ type ArticleFactoryProps = {
 type ArticleImagesProps = {
   images: SliderArticleImages;
 };
-type SliderArticleImages = { caption: string; src: string; id: number; alt: string }[];
+type SliderArticleImages = {
+  isInteractiveImage: boolean;
+  caption: string;
+  src: string;
+  id: number;
+  alt: string;
+}[];
 
 function articleToSliderAdapter(images: IImage[], altPrefix?: string): SliderArticleImages {
-  return images.map((image, idx) => ({
-    caption: image.description,
-    src: image.image,
-    id: idx,
-    alt: `${altPrefix ?? 'article-image-'}${idx}`
-  }));
+  return images.map((image, idx) => {
+    const isInteractiveImage = image.hasOwnProperty('interactiveImage') && !!image.interactiveImage;
+    return {
+      caption: image.description,
+      src: image.image,
+      id: idx,
+      alt: `${altPrefix ?? 'article-image-'}${idx}`,
+      isInteractiveImage,
+      interactiveImage: image.interactiveImage
+    };
+  });
 }
 
 function ImageOrSliderArticle({ images }: ArticleImagesProps): JSX.Element | null {
@@ -30,7 +42,11 @@ function ImageOrSliderArticle({ images }: ArticleImagesProps): JSX.Element | nul
   if (images.length > 1) {
     return <SliderArticle src={images} />;
   } else {
-    return <ImageArticle alt={images[0].alt} src={images[0].src} />;
+    return images[0].isInteractiveImage ? (
+      <InteractiveImageArticle {...images[0]} />
+    ) : (
+      <ImageArticle alt={images[0].alt} src={images[0].src} />
+    );
   }
 }
 

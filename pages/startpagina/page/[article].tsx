@@ -29,7 +29,6 @@ const ArticlePage = ({ title, articles, homeTitle }: ArticlePageProps): JSX.Elem
   }, [drawerHeight, isLargeScreen]);
 
   const handleDrawerVisibility = () => setShowDrawer(prevState => !prevState);
-
   return (
     <>
       <Head>
@@ -74,20 +73,16 @@ export default ArticlePage;
 
 export async function getStaticProps({ params }: { params: { article: string } }) {
   const homeCollection = new CollectionService('home', 'file');
-  const {
-    meta: { title: homeTitle }
-  } = homeCollection.getItem('home_general');
-
   const pagesCollection = new CollectionService('pages');
-  const {
-    meta: { title, articles }
-  } = pagesCollection.getItem(params.article);
+
+  const { meta: homeMeta } = homeCollection.getItem('home_general');
+  const { meta: pageMeta } = pagesCollection.getItem(params.article);
 
   return {
     props: {
-      homeTitle,
-      title,
-      articles
+      homeTitle: homeMeta.title ?? '',
+      title: pageMeta.title ?? '',
+      articles: pageMeta.articles ?? []
     }
   };
 }

@@ -1,3 +1,15 @@
+export interface IInteractiveImage {
+  points: IInteractiveImagePoints;
+}
+export type IInteractiveImagePoints = {
+  [pointKey: string]: {
+    x: string;
+    y: string;
+    xPercentage: string;
+    yPercentage: string;
+    metaData: { tooltip: string };
+  };
+};
 export type ICollection = {
   body: string;
   filename: string;
@@ -6,6 +18,7 @@ export type ICollection = {
 export type IImage = {
   description: string;
   image: string;
+  interactiveImage: IInteractiveImage;
 };
 export type IArticle = {
   title: string;

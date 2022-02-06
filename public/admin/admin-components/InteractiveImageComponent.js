@@ -53,7 +53,7 @@ const Control = createClass({
     const yPercentage = `${(y / rect.height) * 100}%`;
 
     // save state
-    this.valueCache.set(key, { ...this.valueCache.get(key), x: xPercentage, y: yPercentage });
+    this.valueCache.set(key, { ...this.valueCache.get(key), x, y, xPercentage, yPercentage });
     // update cms value
     this.triggerChangeUpdate({}, { points: this.valueCache });
   },
@@ -133,9 +133,9 @@ const Control = createClass({
     styleObject.transform = 'translate(-50%, -50%)';
     return styleObject;
   },
-  setPointPosition(styleObject, { x, y }) {
-    styleObject.left = `${x}`;
-    styleObject.top = `${y}`;
+  setPointPosition(styleObject, { xPercentage, yPercentage }) {
+    styleObject.left = `${xPercentage}`;
+    styleObject.top = `${yPercentage}`;
     return styleObject;
   },
   render: function () {
